@@ -2,8 +2,10 @@
     "name": "m3u8-download",
     "version": "0.0.1",
     "main": "index.js",
+    "//": "if running start:test-express, make sure to uncomment the 'startServer' line for it to stay alive",
     "scripts": {
         "start": "tsc && node ./dist",
+        "start:test-express": "tsc src/__tests__/setup/express.ts --outDir dist/__tests__/setup/ --esModuleInterop true --module commonjs && node dist/__tests__/setup/express.js",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "tsc": "tsc"
