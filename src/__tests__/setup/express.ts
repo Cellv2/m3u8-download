@@ -40,4 +40,4 @@ export const stopServer = () => {
     server?.close();
 };
 
-startServer();
+// startServer();
