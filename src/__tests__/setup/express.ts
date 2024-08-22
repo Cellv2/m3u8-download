@@ -30,14 +30,10 @@ app.get("/", (req, res) => {
 
 let server: Server | null;
 
-export const startServer = () => {
-    const port = 3000;
-    console.log(`Starting server on ${port}`);
+export const startServer = (port: number = 3000) => {
     server = app.listen(port);
 };
 
 export const stopServer = () => {
     server?.close();
 };
-
-// startServer();
