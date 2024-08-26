@@ -18,8 +18,3 @@ export const downloader = async (url: string): Promise<Buffer> => {
         throw new Error(error.message);
     }
 };
-
-// export const downloadFile = async (url: string): Promise<string> => {
-export const downloadFile = async (url: string): Promise<any> => {
-
-}

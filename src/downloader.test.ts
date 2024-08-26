@@ -4,8 +4,7 @@ import {
     startServer,
     stopServer,
 } from "./__tests__/setup/express";
-import { M3U8_FILE_EXTENSION } from "./constants/file-exts.consts";
-import { downloader, downloadFile } from "./downloader";
+import { downloader } from "./downloader";
 
 beforeAll(() => {
     startServer();
@@ -31,23 +30,4 @@ describe("downloader", () => {
             TypeError(`Failed to parse URL from ${url}`)
         );
     });
-});
-
-describe("downloadFile", () => {
-    it("should download all relevant mpegts files from the m3u8", () => {});
-});
-
-describe("validator", () => {
-    it("should validate that the input file is a valid m3u8", async () => {
-        const expectedFileExtension = M3U8_FILE_EXTENSION;
-
-        const downloadedFile = downloadFile("http://localhost:3000/m3u8");
-
-        // expect(downloadedFile.endsWith(expectedFileExtension)).toBe(true)
-        const fileExtRegex = `/^.*${expectedFileExtension}$/i`;
-        await expect(downloadedFile).resolves.toMatch(fileExtRegex);
-        await expect(downloadedFile).rejects.not.toMatch(fileExtRegex);
-    });
-
-    it("should throw if the input file is not a valid m3u8", () => {});
 });
