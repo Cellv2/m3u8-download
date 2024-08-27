@@ -9,4 +9,6 @@ module.exports = {
         "<rootDir>/src/__tests__/setup/",
         "<rootDir>/dist/",
     ],
+    globalSetup: "<rootDir>/global-setup.js",
+    globalTeardown: "<rootDir>/global-teardown.js",
 };
