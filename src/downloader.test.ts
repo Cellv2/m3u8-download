@@ -1,18 +1,6 @@
 import fs from "fs";
-import {
-    m3u8FilePath,
-    startServer,
-    stopServer,
-} from "./__tests__/setup/express";
+import { m3u8FilePath } from "./__tests__/setup/express";
 import { downloader } from "./downloader";
-
-beforeAll(() => {
-    startServer();
-});
-
-afterAll(() => {
-    stopServer();
-});
 
 describe("downloader", () => {
     it("should download the correct m3u8 at the link provided", async () => {

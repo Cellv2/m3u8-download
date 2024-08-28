@@ -1,14 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { startServer, stopServer } from "../setup/express";
-
-beforeAll(() => {
-    startServer();
-});
-
-afterAll(() => {
-    stopServer();
-});
 
 describe("express server", () => {
     it("gives 20X when requesting root page", async () => {
