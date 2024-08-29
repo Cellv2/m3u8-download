@@ -38,12 +38,9 @@ describe("validateisM3u8", () => {
 });
 
 describe("validateIsM3u8ContentType", () => {
-    it("should check the content type is valid", async () => {
-        const fakeHeaders = new Headers();
-        fakeHeaders.set("Content-Type", M3U8_CONTENT_TYPE);
-
+    it("should check the content type is valid", () => {
         const fakeResponse: Response = {
-            headers: fakeHeaders,
+            headers: new Headers(),
             ok: false,
             redirected: false,
             status: 0,
@@ -71,6 +68,7 @@ describe("validateIsM3u8ContentType", () => {
                 throw new Error("Function not implemented.");
             },
         };
+        fakeResponse.headers.set("Content-Type", M3U8_CONTENT_TYPE);
 
         const hasCorrectContentType =
             validateResponseHasM3u8ContentType(fakeResponse);
