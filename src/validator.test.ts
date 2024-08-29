@@ -1,4 +1,4 @@
-import { m3u8FilePath } from "./__tests__/setup/express";
+import { m3u8FilePath, videoFilePath } from "./__tests__/setup/express";
 import { M3U8_FILE_EXTENSION } from "./constants/file-exts.consts";
 import { downloadFile } from "./download-file";
 import { validateisM3u8 } from "./validator";
@@ -11,13 +11,17 @@ const mockedDownloadFile = downloadFile as jest.MockedFunction<
 describe("validator", () => {
     it("should validate that the input file is a valid m3u8", async () => {
         const expectedFileExtension = M3U8_FILE_EXTENSION;
+        const fileExtRegex = new RegExp(`^.*${expectedFileExtension}$`, "i");
 
         mockedDownloadFile.mockResolvedValue(m3u8FilePath);
         const downloadedFile = mockedDownloadFile("http://localhost:3000/m3u8");
-
-        const fileExtRegex = `/^.*${expectedFileExtension}$/i`;
         await expect(downloadedFile).resolves.toMatch(fileExtRegex);
-        await expect(downloadedFile).rejects.not.toMatch(fileExtRegex);
+
+        mockedDownloadFile.mockRejectedValue(videoFilePath);
+        const downloadedFileWrong = mockedDownloadFile(
+            "http://localhost:3000/video"
+        );
+        await expect(downloadedFileWrong).rejects.not.toMatch(fileExtRegex);
 
         const isM3u8 = await validateisM3u8(await downloadedFile);
         expect(isM3u8).toBe(true);
