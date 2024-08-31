@@ -4,7 +4,6 @@ import { M3U8_FILE_EXTENSION } from "./constants/file-exts.consts";
 import { downloadFile } from "./download-file";
 
 import * as validator from "./validator"
-const { validateFileisM3u8, validateResponseHasM3u8ContentType } = validator
 
 import crypto from 'crypto'
 
@@ -23,7 +22,7 @@ describe("validateisM3u8", () => {
     })
 
     it("should return true if input file is a valid m3u8", async () => {
-        const isM3u8 = validateFileisM3u8(validFilePath);
+        const isM3u8 = validator.validateFileisM3u8(validFilePath);
         await expect(isM3u8).resolves.toBe(true);
 
         expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
@@ -32,7 +31,7 @@ describe("validateisM3u8", () => {
     });
 
     it("should return false if the input file is not a valid m3u8", async () => {
-        const isM3u8 = validateFileisM3u8(invalidFilePath)
+        const isM3u8 = validator.validateFileisM3u8(invalidFilePath)
         await expect(isM3u8).resolves.toBe(false)
 
         expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
@@ -61,6 +60,8 @@ describe("validateisM3u8", () => {
 });
 
 describe("validateIsM3u8ContentType", () => {
+    const validateResponseContentTypeSpy = jest.spyOn(validator, "validateResponseHasM3u8ContentType")
+
     it("should check the content type is valid", () => {
         const fakeResponse: Response = {
             headers: new Headers(),
@@ -93,9 +94,11 @@ describe("validateIsM3u8ContentType", () => {
         };
         fakeResponse.headers.set("Content-Type", M3U8_CONTENT_TYPE);
 
-        const hasCorrectContentType =
-            validateResponseHasM3u8ContentType(fakeResponse);
+        const hasCorrectContentType = validator.validateResponseHasM3u8ContentType(fakeResponse);
 
         expect(hasCorrectContentType).toBe(true);
+
+        expect(validateResponseContentTypeSpy).toHaveBeenCalledTimes(1)
+        expect(validateResponseContentTypeSpy).toHaveBeenCalledWith(fakeResponse)
     });
 });
