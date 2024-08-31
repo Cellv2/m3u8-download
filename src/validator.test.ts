@@ -2,10 +2,11 @@ import { m3u8FilePath, videoFilePath } from "./__tests__/setup/express";
 import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 import { M3U8_FILE_EXTENSION } from "./constants/file-exts.consts";
 import { downloadFile } from "./download-file";
-import {
-    validateisM3u8,
-    validateResponseHasM3u8ContentType,
-} from "./validator";
+
+import * as validator from "./validator"
+const { validateFileisM3u8, validateResponseHasM3u8ContentType } = validator
+
+import crypto from 'crypto'
 
 jest.mock("./download-file");
 const mockedDownloadFile = downloadFile as jest.MockedFunction<
@@ -13,28 +14,48 @@ const mockedDownloadFile = downloadFile as jest.MockedFunction<
 >;
 
 describe("validateisM3u8", () => {
-    it("should validate that the input file is a valid m3u8", async () => {
-        const expectedFileExtension = M3U8_FILE_EXTENSION;
-        const fileExtRegex = new RegExp(`^.*${expectedFileExtension}$`, "i");
+    const validFilePath = m3u8FilePath;
+    const invalidFilePath = crypto.randomBytes(16).toString("hex");
+    const validateFileisM3u8Spy = jest.spyOn(validator, "validateFileisM3u8")
 
-        mockedDownloadFile.mockResolvedValue(m3u8FilePath);
-        const downloadedFile = mockedDownloadFile("http://localhost:3000/m3u8");
-        await expect(downloadedFile).resolves.toMatch(fileExtRegex);
+    afterEach(() => {
+        validateFileisM3u8Spy.mockReset()
+    })
 
+    it("should return true if input file is a valid m3u8", async () => {
+        // const expectedFileExtension = M3U8_FILE_EXTENSION;
+        // const fileExtRegex = new RegExp(`^.*${expectedFileExtension}$`, "i");
+
+        // mockedDownloadFile.mockResolvedValue(m3u8FilePath);
+        // const downloadedFile = mockedDownloadFile("http://localhost:3000/m3u8");
+        // await expect(downloadedFile).resolves.toMatch(fileExtRegex);
+
+        // mockedDownloadFile.mockRejectedValue(videoFilePath);
+        // const downloadedFileWrong = mockedDownloadFile(
+        //     "http://localhost:3000/video"
+        // );
+        // await expect(downloadedFileWrong).rejects.not.toMatch(fileExtRegex);
+
+
+        const isM3u8 = await validateFileisM3u8(validFilePath);
+        expect(isM3u8).toBe(true);
+
+        expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
+        expect(validateFileisM3u8Spy).toHaveBeenCalledWith(validFilePath);
+    });
+
+    it("should return false if the input file is not a valid m3u8", () => {
+        expect("").toBe({});
+    })
+
+    it("should throw if the input file is not on disk", async () => {
         mockedDownloadFile.mockRejectedValue(videoFilePath);
         const downloadedFileWrong = mockedDownloadFile(
             "http://localhost:3000/video"
         );
-        await expect(downloadedFileWrong).rejects.not.toMatch(fileExtRegex);
 
-        const isM3u8 = await validateisM3u8(await downloadedFile);
-        expect(isM3u8).toBe(true);
-
-        expect(validateisM3u8).toHaveBeenCalledTimes(1);
-        expect(validateisM3u8).toHaveBeenCalledWith(downloadedFile);
+        expect("").toBe({});
     });
-
-    it("should throw if the input file is not a valid m3u8", () => {});
 });
 
 describe("validateIsM3u8ContentType", () => {
