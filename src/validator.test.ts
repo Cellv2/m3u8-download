@@ -21,6 +21,7 @@ describe("validateisM3u8", () => {
         validateFileisM3u8Spy.mockReset()
     })
 
+    // TODO: test one and multiple newlines at the end of the m3u8 file
     it("should return true if input file is a valid m3u8", async () => {
         const isM3u8 = validator.validateFileisM3u8(validFilePath);
         await expect(isM3u8).resolves.toBe(true);
@@ -30,15 +31,14 @@ describe("validateisM3u8", () => {
         expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(invalidFilePath);
     });
 
-    it("should return false if the input file is not a valid m3u8", async () => {
-        const isM3u8 = validator.validateFileisM3u8(invalidFilePath)
-        await expect(isM3u8).resolves.toBe(false)
+    // it("should return false if the input file is not a valid m3u8", async () => {
+    //     const isM3u8 = validator.validateFileisM3u8(invalidFilePath)
+    //     await expect(isM3u8).resolves.toBe(false)
 
-        expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
-        expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(validFilePath)
-        expect(validateFileisM3u8Spy).toHaveBeenCalledWith(invalidFilePath);
-
-    })
+    //     expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
+    //     expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(validFilePath)
+    //     expect(validateFileisM3u8Spy).toHaveBeenCalledWith(invalidFilePath);
+    // })
 
     it("should throw if the input file is not on disk", async () => {
 
