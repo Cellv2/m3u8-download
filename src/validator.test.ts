@@ -3,6 +3,7 @@ import { blankM3u8FilePath, m3u8FilePath } from "./__tests__/setup/express";
 import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 import { downloadFile } from "./download-file";
 import * as validator from "./validator";
+import { SystemError } from "./models/errors/system-error";
 
 jest.mock("./download-file");
 const mockedDownloadFile = downloadFile as jest.MockedFunction<
@@ -40,17 +41,19 @@ describe("validateisM3u8", () => {
     });
 
     it("should throw if the input file is not on disk", async () => {
-        // const expectedFileExtension = M3U8_FILE_EXTENSION;
-        // const fileExtRegex = new RegExp(`^.*${expectedFileExtension}$`, "i");
-        // mockedDownloadFile.mockResolvedValue(m3u8FilePath);
-        // const downloadedFile = mockedDownloadFile("http://localhost:3000/m3u8");
-        // await expect(downloadedFile).resolves.toMatch(fileExtRegex);
-        // mockedDownloadFile.mockRejectedValue(videoFilePath);
-        // const downloadedFileWrong = mockedDownloadFile(
-        //     "http://localhost:3000/video"
-        // );
-        // await expect(downloadedFileWrong).rejects.not.toMatch(fileExtRegex);
-        // expect("").toBe({});
+        const invalidFilePathCheck =
+            validator.validateFileisM3u8(invalidFilePath);
+        const message = `ENOENT: no such file or directory, open '${invalidFilePath}'`;
+
+        const expectedError = new SystemError(`${message}`, "ENOENT", -2);
+        await expect(invalidFilePathCheck).rejects.toThrow(expectedError);
+        // await expect(invalidFilePathCheck).rejects.toThrow(Error(`${message}`))
+        // await expect(invalidFilePathCheck).rejects.toThrow(TypeError(`${message}`))
+
+        expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
+        expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(validFilePath);
+        expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(blankFilePath);
+        expect(validateFileisM3u8Spy).toHaveBeenCalledWith(invalidFilePath);
     });
 });
 
