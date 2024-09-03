@@ -1,12 +1,12 @@
 import fs from "fs";
-import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 import readline from "readline";
+import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 
 // TODO: remove null
 // TODO: check for 0 length file
 export const validateFileisM3u8 = async (
     filePath: string
-): Promise<boolean | null> => {
+): Promise<boolean> => {
     try {
         const firstLine = await getFirstLineFromFile(filePath);
 
@@ -16,8 +16,11 @@ export const validateFileisM3u8 = async (
 
         return true;
     } catch (error: unknown) {
-        console.error("panic");
-        return null;
+        if (!(error instanceof Error)) {
+            throw error;
+        }
+
+        throw new Error(error.message);
     }
 };
 
@@ -41,9 +44,12 @@ export const getFirstLineFromFile = async (
         }
 
         return null;
-    } catch (err) {
-        console.error(err);
-        return null;
+    } catch (error: unknown) {
+        if (!(error instanceof Error)) {
+            throw error;
+        }
+
+        throw new Error(error.message);
     }
 };
 

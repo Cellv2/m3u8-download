@@ -3,7 +3,6 @@ import { blankM3u8FilePath, m3u8FilePath } from "./__tests__/setup/express";
 import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 import { downloadFile } from "./download-file";
 import * as validator from "./validator";
-import { SystemError } from "./models/errors/system-error";
 
 jest.mock("./download-file");
 const mockedDownloadFile = downloadFile as jest.MockedFunction<
@@ -45,10 +44,7 @@ describe("validateisM3u8", () => {
             validator.validateFileisM3u8(invalidFilePath);
         const message = `ENOENT: no such file or directory, open '${invalidFilePath}'`;
 
-        const expectedError = new SystemError(`${message}`, "ENOENT", -2);
-        await expect(invalidFilePathCheck).rejects.toThrow(expectedError);
-        // await expect(invalidFilePathCheck).rejects.toThrow(Error(`${message}`))
-        // await expect(invalidFilePathCheck).rejects.toThrow(TypeError(`${message}`))
+        await expect(invalidFilePathCheck).rejects.toThrow(Error(`${message}`));
 
         expect(validateFileisM3u8Spy).toHaveBeenCalledTimes(1);
         expect(validateFileisM3u8Spy).not.toHaveBeenCalledWith(validFilePath);
