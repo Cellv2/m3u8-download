@@ -1,5 +1,8 @@
+import { fs } from "memfs";
 import * as fileUtils from "./file.utils";
-import { vol, fs } from "memfs";
+
+jest.mock("fs");
+jest.mock("fs/promises");
 
 describe("getFirstLineFromFile", () => {
     const getFirstLineFromFileSpy = jest.spyOn(
@@ -7,27 +10,30 @@ describe("getFirstLineFromFile", () => {
         "getFirstLineFromFile"
     );
 
-    afterEach(() => {
+    beforeEach(() => {
         getFirstLineFromFileSpy.mockClear();
-        vol.reset();
+    });
+
+    afterEach(() => {
+        // why don't I need this? it dies in fire with it?
+        // vol.reset()
     });
 
     it("should return only the first line in the file", async () => {
-        const filePath = "/validFile.txt";
+        const filePath = "/valid.txt";
         const firstLine = "This is line one";
         const secondLine = "ThisIsLineTwo";
-        await fs.promises.writeFile(
-            filePath,
-            `${firstLine}
 
-            ${secondLine}`
+        await fs.promises.writeFile(filePath, `${firstLine}\r\n${secondLine}`);
+        console.log(
+            await fs.promises.readFile(filePath, { encoding: "utf-8" })
         );
 
-        const x = fileUtils.getFirstLineFromFile(filePath);
+        const resultPromise = fileUtils.getFirstLineFromFile(filePath);
 
         expect(getFirstLineFromFileSpy).toHaveBeenCalledTimes(1);
-        await expect(x).resolves.toBe(firstLine);
-        await expect(x).resolves.not.toBe(secondLine);
+        await expect(resultPromise).resolves.toBe(firstLine);
+        await expect(resultPromise).resolves.not.toBe(secondLine);
     });
 
     it("should return null if there is nothing in the file", () => {});
