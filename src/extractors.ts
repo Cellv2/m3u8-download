@@ -2,7 +2,12 @@
 
 // https://datatracker.ietf.org/doc/html/rfc8216
 
-export const extractTsUrls = (fileContent: string) => {};
+export const extractTsUrls = (fileContent: string): string[] => {
+    const lines = fileContent.split("\n");
+    const tsUrls = lines.filter((line) => line.endsWith(".ts"));
+
+    return tsUrls;
+};
 
 export const extractM3u8Urls = () => {};
 

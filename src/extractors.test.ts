@@ -14,10 +14,12 @@ describe(extractors.extractTsUrls, () => {
         "#EXT-X-ENDLIST",
     ].join("\n");
 
+    const expected = ["segment_00000.ts", "segment_00001.ts"];
+
     it("should return an array of all .ts relative URLs", () => {
         const result = extractors.extractTsUrls(m3u8FileContent);
 
-        expect(result).toBe(["segment_00000.ts", "segment_00001.ts"]);
+        expect(result).toStrictEqual(expected);
     });
 });
 
