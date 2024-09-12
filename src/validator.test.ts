@@ -1,13 +1,7 @@
 import crypto from "crypto";
 import { blankM3u8FilePath, m3u8FilePath } from "./__tests__/setup/express";
 import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
-import { downloadFile } from "./download-file";
 import * as validator from "./validator";
-
-jest.mock("./download-file");
-const mockedDownloadFile = downloadFile as jest.MockedFunction<
-    typeof downloadFile
->;
 
 describe("validateisM3u8", () => {
     const validFilePath = m3u8FilePath;
