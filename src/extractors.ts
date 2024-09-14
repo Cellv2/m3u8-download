@@ -8,9 +8,3 @@ export const extractTsUrls = (fileContent: string): string[] => {
 
     return tsUrls;
 };
-
-export const extractM3u8Urls = () => {};
-
-export const extractLines = () => {};
-
-export const extractKeyUrls = () => {};

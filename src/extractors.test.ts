@@ -40,15 +40,3 @@ describe(extractors.extractTsUrls, () => {
         expect(extractTsUrlsSpy).toHaveBeenCalledWith(m3u8FileContent);
     });
 });
-
-describe(extractors.extractM3u8Urls, () => {
-    xit("should ...", () => {});
-});
-
-describe(extractors.extractLines, () => {
-    xit("should ...", () => {});
-});
-
-describe(extractors.extractKeyUrls, () => {
-    xit("should ...", () => {});
-});
