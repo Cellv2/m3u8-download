@@ -7,27 +7,59 @@
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     </head>
     <body>
-        <video
-            src="http://localhost:3000/video"
-            loop="true"
-            autoplay="autoplay"
-            controls
-            muted
-        ></video>
-        <video
-            id="video"
-            loop="true"
-            autoplay="autoplay"
-            controls
-            muted
-        ></video>
+        <div>
+            <h2>MP4</h2>
+            <video
+                src="http://localhost:3000/video"
+                loop="true"
+                autoplay="autoplay"
+                controls
+                muted
+            ></video>
+        </div>
+
+        <div>
+            <h2>M3u8</h2>
+            <video
+                id="video"
+                loop="true"
+                autoplay="autoplay"
+                controls
+                muted
+            ></video>
+        </div>
+
+        <div>
+            <h2>M3u8 (Chained)</h2>
+            <video
+                id="video-chained"
+                loop="true"
+                autoplay="autoplay"
+                controls
+                muted
+            ></video>
+            <div style="display: inline-block;">
+                <button type="button" onclick="hlsChained.currentLevel=-1">auto</button>
+                <button type="button" onclick="hlsChained.currentLevel=0">0 (480p)</button>
+                <button type="button" onclick="hlsChained.currentLevel=1">1 (720p)</button>
+                <button type="button" onclick="hlsChained.currentLevel=2">2 (1080p)</button>
+            </div>
+        </div>
         <script>
             if (Hls.isSupported()) {
-                var video = document.getElementById("video");
-                var hls = new Hls();
+                const video = document.getElementById("video");
+                const hls = new Hls();
                 hls.loadSource("http://localhost:3000/m3u8");
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play();
+                });
+
+                const videoChained = document.getElementById("video-chained");
+                var hlsChained = new Hls();
+                hlsChained.loadSource("http://localhost:3000/m3u8-chained");
+                hlsChained.attachMedia(videoChained);
+                hlsChained.on(Hls.Events.MANIFEST_PARSED, function () {
                     video.play();
                 });
             }

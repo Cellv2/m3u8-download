@@ -23,6 +23,14 @@ app.get("/m3u8", (req, res) => {
     res.sendFile(m3u8FilePath);
 });
 
+export const m3u8ChainedFilePath = path.join(
+    __dirname,
+    "../../../data/tests/hls-content/chained.m3u8"
+);
+app.get("/m3u8-chained", (req, res) => {
+    res.sendFile(m3u8ChainedFilePath);
+});
+
 export const videoFilePath = path.join(__dirname, "../../../data/tests/test.mp4");
 app.get("/video", (req, res) => {
     res.sendFile(videoFilePath);

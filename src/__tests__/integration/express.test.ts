@@ -1,5 +1,10 @@
 import fs from "fs";
 import path from "path";
+import {
+    m3u8ChainedFilePath,
+    m3u8FilePath,
+    videoFilePath,
+} from "../setup/express";
 
 describe("express server", () => {
     it("gives 20X when requesting root page", async () => {
@@ -25,11 +30,16 @@ describe("express server", () => {
         const response = await fetch("http://localhost:3000/m3u8");
         const responseAsBuffer = Buffer.from(await response.arrayBuffer());
 
-        const localM3u8Path = path.join(
-            __dirname,
-            "../../../data/tests/hls-content/test.m3u8"
-        );
-        const localArrBuffer = await fs.promises.readFile(localM3u8Path);
+        const localArrBuffer = await fs.promises.readFile(m3u8FilePath);
+
+        expect(responseAsBuffer.equals(localArrBuffer)).toBe(true);
+    });
+
+    it("serves the correct m3u8 when the m3u8-chained path is hit", async () => {
+        const response = await fetch("http://localhost:3000/m3u8-chained");
+        const responseAsBuffer = Buffer.from(await response.arrayBuffer());
+
+        const localArrBuffer = await fs.promises.readFile(m3u8ChainedFilePath);
 
         expect(responseAsBuffer.equals(localArrBuffer)).toBe(true);
     });
@@ -38,11 +48,7 @@ describe("express server", () => {
         const response = await fetch("http://localhost:3000/video");
         const responseAsBuffer = Buffer.from(await response.arrayBuffer());
 
-        const localMp4Path = path.join(
-            __dirname,
-            "../../../data/tests/test.mp4"
-        );
-        const localArrBuffer = await fs.promises.readFile(localMp4Path);
+        const localArrBuffer = await fs.promises.readFile(videoFilePath);
 
         expect(responseAsBuffer.equals(localArrBuffer)).toBe(true);
     });
