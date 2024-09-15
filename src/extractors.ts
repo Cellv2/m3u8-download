@@ -7,6 +7,13 @@
 // https://stackoverflow.com/questions/47233304/how-to-download-m3u8-in-once-time
 // ffmpeg -i "https://your-url/videos/the-video.m3u8" -codec copy file.mp4
 
+export const extractM3u8Urls = (fileContent: string): string[] => {
+    const lines = fileContent.split("\n");
+    const urls = lines.filter((line) => line.endsWith(".m3u8"));
+
+    return urls;
+};
+
 export const extractTsUrls = (fileContent: string): string[] => {
     const lines = fileContent.split("\n");
     const tsUrls = lines.filter((line) => line.endsWith(".ts"));
