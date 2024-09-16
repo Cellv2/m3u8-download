@@ -2,7 +2,7 @@ import express from "express";
 import { Server } from "http";
 import path from "path";
 
-const app = express();
+export const app = express();
 
 app.use(
     express.static(path.join(__dirname, "../../../data/tests/hls-content"))
