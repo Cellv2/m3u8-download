@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { createFakeResponse } from "./__fakes__/fake-response";
 import { blankM3u8FilePath, m3u8FilePath } from "./__tests__/setup/express";
 import { M3U8_CONTENT_TYPE } from "./constants/content-type.consts";
 import * as validator from "./validator";
@@ -54,35 +55,7 @@ describe("validateIsM3u8ContentType", () => {
     );
 
     it("should check the content type is valid", () => {
-        const fakeResponse: Response = {
-            headers: new Headers(),
-            ok: false,
-            redirected: false,
-            status: 0,
-            statusText: "",
-            type: "basic",
-            url: "",
-            clone: function (): Response {
-                throw new Error("Function not implemented.");
-            },
-            body: null,
-            bodyUsed: false,
-            arrayBuffer: function (): Promise<ArrayBuffer> {
-                throw new Error("Function not implemented.");
-            },
-            blob: function (): Promise<Blob> {
-                throw new Error("Function not implemented.");
-            },
-            formData: function (): Promise<FormData> {
-                throw new Error("Function not implemented.");
-            },
-            json: function (): Promise<any> {
-                throw new Error("Function not implemented.");
-            },
-            text: function (): Promise<string> {
-                throw new Error("Function not implemented.");
-            },
-        };
+        const fakeResponse = createFakeResponse();
         fakeResponse.headers.set("Content-Type", M3U8_CONTENT_TYPE);
 
         const hasCorrectContentType =
