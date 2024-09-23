@@ -64,22 +64,23 @@ describe("downloader", () => {
 
         const fetchMock = jest.spyOn(global, "fetch");
         const fakeResponse = createFakeResponse();
-        const x = () => Promise.resolve(fakeResponse);
+        // const x = () => Promise.resolve(fakeResponse);
         // fetchMock.mockImplementation(x)
-        const y: Partial<Response> = {
-            ok: false,
-        };
+        // const y: Partial<Response> = {
+        //     ok: false,
+        // };
 
 
         // const mockedFetchError = new Error('some error');
         // (fetch as jest.MockedFunction<typeof fetch>).mockRejectedValueOnce(fR);
 
-        fetchMock.mockResolvedValue(fakeResponse)
+        // fetchMock.mockResolvedValue(fakeResponse)
+        // fetchMock.mockRejectedValue(fakeResponse)
 
-
+        // fetchMock.mockImplementation(() => Promise.reject(fakeResponse))
 
         const response = downloader("");
-        console.log(response)
+        // console.log(response)
         await expect(response).rejects.toThrow();
         expect(fetchMock).toHaveBeenCalledTimes(1);
 
