@@ -4,6 +4,7 @@
     ],
     "exclude": [
         "src/**/*.test.ts",
+        "src/__fakes__/**/*",
         "src/__mocks__/**/*",
         "src/__tests__/**/*"
     ],

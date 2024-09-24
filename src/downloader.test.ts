@@ -5,6 +5,11 @@ import { createFakeResponse } from "./__fakes__/fake-response";
 
 // jest.mock('fetch', ()=>jest.fn())
 
+import { http, HttpResponse } from 'msw'
+import { server } from "./__mocks__/node";
+
+afterAll(() => server.close())
+
 
 describe("downloader", () => {
     it("should download the correct m3u8 at the link provided", async () => {
@@ -24,6 +29,10 @@ describe("downloader", () => {
     });
 
     it("should throw if response is not ok", async () => {
+
+        server.listen()
+
+
         // just want this here for now
         // enableFetchMocks();
 
@@ -79,7 +88,7 @@ describe("downloader", () => {
 
         // fetchMock.mockImplementation(() => Promise.reject(fakeResponse))
 
-        const response = downloader("");
+        const response = downloader("http://this-errors/");
         // console.log(response)
         await expect(response).rejects.toThrow();
         expect(fetchMock).toHaveBeenCalledTimes(1);
