@@ -11,7 +11,9 @@ export const handlers = [
         });
     }),
 
+    http.get("http://localhost:3000/m3u8-chained", () => passthrough()),
     http.get("http://localhost:3000/m3u8", () => passthrough()),
+
     http.get("http://this-errors/", () => HttpResponse.error()),
     http.get(
         "http://error500/",
