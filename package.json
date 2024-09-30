@@ -26,5 +26,8 @@
         "supertest": "^7.0.0",
         "ts-jest": "^29.2.4",
         "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "command-exists-promise": "^2.0.2"
     }
 }
