@@ -84,12 +84,14 @@ describe(commandResolver.isCommandAvailable, () => {
         //     };
         // });
 
-        mockedCommandExists.mockImplementationOnce(() => Promise.reject());
+        const someFileSystemError = Error("There was a fs error");
+
+        mockedCommandExists.mockImplementationOnce(() =>
+            Promise.reject(someFileSystemError)
+        );
 
         const result = commandResolver.isCommandAvailable();
 
-        await expect(result).rejects.toThrow(
-            TypeError("Unable to determine whether command exists on system")
-        );
+        await expect(result).rejects.toBe(someFileSystemError);
     });
 });
