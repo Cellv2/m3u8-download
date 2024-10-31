@@ -4,23 +4,9 @@ import * as commandResolver from "./commandResolver";
 jest.mock("command-exists-promise");
 const mockedCommandExists = jest.mocked(commandExists);
 
-// const mockedCommandExists = <jest.Mock<typeof commandExists>>(
-//     (<unknown>jest.mocked("command-exists-promise"))
-// );
-
 describe(commandResolver.isCommandAvailable, () => {
     it("should return true if no args are passed and ffmpeg is available on the system", async () => {
-        // mockedCommandExists.mockImplementationOnce(() => {
-        //     return function commandExists(command: any) {
-        //         return Promise.resolve(true);
-        //     };
-        // });
-
-        // console.log(mockedCommandExists);
-        // console.log(commandExists)
         mockedCommandExists.mockImplementationOnce(() => Promise.resolve(true));
-
-        // mockedCommandExists.mockResolvedValueOnce()
 
         const result = commandResolver.isCommandAvailable();
 
@@ -28,12 +14,6 @@ describe(commandResolver.isCommandAvailable, () => {
     });
 
     it("should return false if no args are passed and ffmpeg is not available on the system", async () => {
-        // mockedCommandExists.mockImplementationOnce(() => {
-        //     return function commandExists(command: any) {
-        //         return Promise.resolve(false);
-        //     };
-        // });
-
         mockedCommandExists.mockImplementationOnce(() =>
             Promise.resolve(false)
         );
@@ -46,12 +26,6 @@ describe(commandResolver.isCommandAvailable, () => {
     it("should return true if command arg is passed and command is available on the system", async () => {
         const command = "iDoubtThisCommandExists";
 
-        // mockedCommandExists.mockImplementationOnce(() => {
-        //     return function commandExists(command: any) {
-        //         return Promise.resolve(true);
-        //     };
-        // });
-
         mockedCommandExists.mockImplementationOnce(() => Promise.resolve(true));
 
         const result = commandResolver.isCommandAvailable(command);
@@ -61,12 +35,6 @@ describe(commandResolver.isCommandAvailable, () => {
 
     it("should return false if command arg is passed but command is not available on the system", async () => {
         const command = "iDoubtThisCommandExists";
-
-        // mockedCommandExists.mockImplementationOnce(() => {
-        //     return function commandExists(command: any) {
-        //         return Promise.resolve(false);
-        //     };
-        // });
 
         mockedCommandExists.mockImplementationOnce(() =>
             Promise.resolve(false)
@@ -78,12 +46,6 @@ describe(commandResolver.isCommandAvailable, () => {
     });
 
     it("should reject with an error if the command resolver errors", async () => {
-        // mockedCommandExists.mockImplementationOnce(() => {
-        //     return function commandExists(command: any) {
-        //         return Promise.reject();
-        //     };
-        // });
-
         const someFileSystemError = Error("There was a fs error");
 
         mockedCommandExists.mockImplementationOnce(() =>
